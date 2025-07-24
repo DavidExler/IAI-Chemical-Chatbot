@@ -1,0 +1,29 @@
+<mat-form-field appearance="fill">
+    <mat-label>{{
+        disabled() && !generating()
+            ? "Select or create a conversation to start chatting"
+            : "Message"
+    }}</mat-label>
+    <textarea
+        #prompt
+        (keydown.enter)="
+            $event.preventDefault(); doPrompt(prompt.value); prompt.value = ''
+        "
+        [disabled]="disabled()"
+        cdkAutosizeMaxRows="15"
+        cdkAutosizeMinRows="1"
+        cdkTextareaAutosize
+        matInput
+        placeholder="Type your message here"
+    ></textarea>
+    <button
+        (click)="
+            doPrompt(generating() ? null : prompt.value); prompt.value = ''
+        "
+        color="primary"
+        mat-icon-button
+        matSuffix
+    >
+        <mat-icon>{{ generating() ? "stop" : "send" }}</mat-icon>
+    </button>
+</mat-form-field>

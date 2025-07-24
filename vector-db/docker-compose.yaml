@@ -1,0 +1,245 @@
+x-import-confluence: &import-confluence
+  build:
+    context: .
+    dockerfile: dockerfiles/scripts.Dockerfile
+  env_file: .env
+  command: ["python3", "/import_confluence.py"]
+  volumes:
+  - /data/huggingface/:/hf_cache
+  depends_on:
+    milvus:
+      condition: service_healthy
+    initialize-milvus:
+      condition: service_completed_successfully
+  deploy:
+    resources:
+      reservations:
+        devices:
+        - driver: nvidia
+          device_ids: ["0"]
+          capabilities: [gpu]
+  labels:
+    com.centurylinklabs.watchtower.enable: false
+
+services:
+  milvus:
+    build:
+      context: .
+      dockerfile: dockerfiles/milvus.Dockerfile
+    restart: always
+    ports:                  #added ports for Milvus
+      - "19530:19530"
+    env_file: .env
+    security_opt:
+    - seccomp:unconfined
+    environment:
+      ETCD_ENDPOINTS: etcd:2379
+      MINIO_ADDRESS: minio:9000
+      MILVUS_HOST: 0.0.0.0
+      MILVUS_PORT: 19530
+    volumes:
+    - ./milvus/milvus:/var/lib/milvus
+    depends_on:
+      etcd:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+    healthcheck:
+      test: curl -f http://localhost:9091/healthz
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    networks:
+    - vector-db
+    - default
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+
+  attu:
+    build:
+      context: .
+      dockerfile: dockerfiles/attu.Dockerfile
+    restart: always
+    ports:
+    - "8000:3000"
+    environment:
+      MILVUS_URL: milvus:19530
+    depends_on:
+      milvus:
+        condition: service_healthy
+    healthcheck:
+      test: curl -f http://localhost:3000/api/v1/healthy
+      interval: 30s
+      timeout: 20s
+      retries: 3
+    labels:
+      com.centurylinklabs.watchtower.enable: "false"
+
+  etcd:
+    image: quay.io/coreos/etcd:v3.5.5
+    restart: always
+    env_file: .env
+    environment:
+      ETCD_NAME: MilvusETCD
+      ETCD_AUTO_COMPACTION_MODE: revision
+      ETCD_AUTO_COMPACTION_RETENTION: 1000
+      ETCD_QUOTA_BACKEND_BYTES: 4294967296
+      ETCD_SNAPSHOT_COUNT: 50000
+      ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+      ETCD_DATA_DIR: /etcd
+      ETCD_ADVERTISE_CLIENT_URLS: http://127.0.0.1:2379
+    volumes:
+    - ./milvus/etcd:/etcd
+    healthcheck:
+      test: etcdctl endpoint health --user root --password $$ETCD_ROOT_PASSWORD
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  minio:
+    image: minio/minio:RELEASE.2023-03-20T20-16-18Z
+    restart: always
+    env_file: .env
+    command: minio server /minio_data --console-address ":9001"
+    volumes:
+    - ./milvus/minio:/minio_data
+    healthcheck:
+      test: curl -f http://localhost:9000/minio/health/live
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  initialize-milvus:
+    build:
+      context: .
+      dockerfile: dockerfiles/scripts.Dockerfile
+    command: ["python3", "/initialize_milvus.py"]
+    env_file: .env
+    environment:
+      MILVUS_HOST: milvus
+      MILVUS_PORT: 19530
+    depends_on:
+      milvus:
+        condition: service_healthy
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+
+  import-confluence:
+    <<: *import-confluence
+    environment:
+      MILVUS_HOST: milvus
+      MILVUS_PORT: 19530
+      HF_HOME: /hf_cache
+      COLLECTION_NAME: confluence_documents
+      CONFLUENCE_TOKEN: ${CONFLUENCE_TOKEN}
+    networks:             #added networks for Milvus
+      - vector-db
+
+
+  import-confluence-private:
+    <<: *import-confluence
+    environment:
+      MILVUS_HOST: milvus
+      MILVUS_PORT: 19530
+      HF_HOME: /hf_cache
+      COLLECTION_NAME: confluence_documents_private
+      CONFLUENCE_TOKEN: ${CONFLUENCE_TOKEN_PRIVATE}
+    networks:
+      - vector-db
+
+  import-kit-pages:
+    build:
+      context: .
+      dockerfile: dockerfiles/scripts.Dockerfile
+    command: ["python3", "/import_kit_pages.py"]
+    env_file: .env
+    environment:
+      MILVUS_HOST: milvus
+      MILVUS_PORT: 19530
+      HF_HOME: /hf_cache
+      URLS_PATH: /urls/urls.txt
+      URLS_TO_VISIT_PATH: /urls/urls_to_visit.txt
+    volumes:
+    - ./urls/:/urls
+    - /data/huggingface/:/hf_cache
+    depends_on:
+      milvus:
+        condition: service_healthy
+      initialize-milvus:
+        condition: service_completed_successfully
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            device_ids: ["1"]
+            capabilities: [gpu]
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+    networks:
+      - vector-db
+
+  import-chemical-pdfs:
+    build:
+      context: .
+      dockerfile: dockerfiles/scripts.Dockerfile
+    command: ["python3", "/import_pdf.py", "-c chemical_database", "/pdfs/chemical/"]
+    env_file: .env
+    environment:
+      MILVUS_HOST: milvus
+      MILVUS_PORT: 19530
+      TOKENIZERS_PARALLELISM: true
+      HF_HOME: /hf_cache
+    volumes:
+    - ./pdfs/:/pdfs
+    - /data/huggingface/:/hf_cache
+    depends_on:
+      milvus:
+        condition: service_healthy
+      initialize-milvus:
+        condition: service_completed_successfully
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 4
+            capabilities: [gpu]
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+    networks:
+    - default
+    - inference
+    - vector-db
+  backup:
+    build:
+      context: .
+      dockerfile: dockerfiles/backup.Dockerfile
+    command: /bin/bash -c "envsubst < /backup.tmpl.yaml > /backup.yaml && milvus-backup create
+      --config /backup.yaml"
+    env_file: .env
+    profiles: ["backup"]
+    environment:
+      MILVUS_HOST: milvus
+      MILVUS_PORT: 19530
+      MINIO_HOST: minio
+    depends_on:
+      milvus:
+        condition: service_healthy
+    labels:
+      com.centurylinklabs.watchtower.enable: false
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 192.168.72.0/24
+  vector-db:
+    driver: bridge
+    name: vector-db
+    ipam:
+      config:
+      - subnet: 192.168.73.0/24
+  inference:
+    external: true

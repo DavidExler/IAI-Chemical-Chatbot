@@ -1,0 +1,63 @@
+services:
+  langfuse-server:
+    image: langfuse/langfuse:2.52.1
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+    - default
+    - monitoring
+    - webserver
+    ports:
+    - "8999:8999"
+    env_file: .env
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://0.0.0.0:8999/api/public/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    environment:
+      VIRTUAL_HOST: iai-ml4home028.iai.kit.edu # Domain
+      VIRTUAL_PORT: 80                         # Port (inside the container)
+      VIRTUAL_PATH: /langfuse/                     # Subpath
+      HOSTNAME: 0.0.0.0
+      PORT: 8999
+      #DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      #DATABASE_URL: postgres://devuser:devpw@db:5432/devdb
+      DATABASE_URL: postgres://postgres:pass@db:5432/devdb
+
+
+      NEXTAUTH_URL: http://iai-ml4home028.iai.kit.edu:8999/
+      TELEMETRY_ENABLED: "false"
+      LANGFUSE_ENABLE_EXPERIMENTAL_FEATURES: "true"
+      AUTH_KEYCLOAK_CLIENT_ID: langfuse
+      AUTH_KEYCLOAK_ISSUER: "http://iai-ml4home028.iai.kit.edu/auth/realms/chatbot"
+      AUTH_KEYCLOAK_ALLOW_ACCOUNT_LINKING: "true"
+      AUTH_DISABLE_SIGNUP: "true"
+
+  db:
+    image: postgres:16
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    env_file: .env
+    volumes:
+    - database_data:/var/lib/postgresql/data
+
+volumes:
+  database_data:
+
+networks:
+  webserver:
+    external: true
+  default:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 192.168.76.0/24
+  monitoring:
+    external: true
+

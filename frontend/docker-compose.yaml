@@ -1,0 +1,55 @@
+services:
+  frontend:
+    image: ghcr.io/raimannma/iai-llm/frontend:latest # self-hosted (ghrc)
+    restart: always
+    environment:
+      KEYCLOAK_CLIENT_ID: oauth
+      KEYCLOAK_REALM: chatbot
+      KEYCLOAK_URL: http://iai-ml4home028.iai.kit.edu/auth
+      VIRTUAL_HOST: iai-ml4home028.iai.kit.edu
+      VIRTUAL_PORT: 80
+      VIRTUAL_PATH: /chat/
+    volumes:
+      - ./dist/browser:/usr/share/nginx/html/chat/ # for local builds
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/chat/"]
+      interval: 30s
+      timeout: 3s
+      retries: 1
+    networks:
+    - webserver
+
+### 
+### Uncomment the following section to enable staging environment.
+### The staging environment can act as a testing ground for new features before they are deployed to production.
+### The frontend environment can then continue to use the production build, on the hosted ghrc.
+### If hosting a frontend to run continuously, tend to the production build image and correct the git in use above.
+###
+#  frontend-staging:
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#      args:
+#        SUBDIR: chat-staging
+#        IS_PRODUCTION: "false"
+#    restart: always
+#    environment:
+#      KEYCLOAK_CLIENT_ID: oauth
+#      KEYCLOAK_REALM: chatbot
+#      KEYCLOAK_URL: http://iai-ml4home028.iai.kit.edu/auth
+#      VIRTUAL_HOST: iai-ml4home028.iai.kit.edu
+#      VIRTUAL_PORT: 80
+#      VIRTUAL_PATH: /chat-staging/
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost/chat-staging/"]
+#      interval: 30s
+#      timeout: 3s
+#      retries: 3
+#    networks:
+#    - webserver
+#    labels:
+#      com.centurylinklabs.watchtower.enable: false
+
+networks:
+  webserver:
+    external: true

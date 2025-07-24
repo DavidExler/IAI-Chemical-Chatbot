@@ -1,0 +1,6 @@
+name: "Multitool Agent"
+messages:
+- content: "What is 2 times the head circumference of Luca Rettenberger?"
+  chain: "agent"
+  tool_names: ["confluence", "calculator"]
+  expected_answer: "2 * 58.5 = 117"

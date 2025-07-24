@@ -1,0 +1,12 @@
+name: "Chat History Bob"
+messages:
+- content: "Hi I am Bob"
+- content: "Who am I?"
+  expected_answer: "You are Bob"
+- content: "What is my name backwards?"
+  expected_answer: "Backwards its boB"
+- content: "What is my name in uppercase?"
+  expected_answer: "BOB"
+- content: "Who am I?"
+  expected_answer: "You are Tim"
+  expect_wrong: true

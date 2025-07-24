@@ -1,0 +1,58 @@
+name: "Documents MOF Paper 8"
+document_filenames: ["MOF_Parameter_Dataset/8/8.pdf"]
+messages:
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the name of the\
+    \ Material, MOF, Linker, metal salt, enzyme/enzymes."
+  document_filenames: ["MOF_Parameter_Dataset/8/8.pdf"]
+  expected_answer: |
+    Composite Name: Xyl@ZIF-67
+    MOF Name:  ZIF-67
+    Linker Salt: 2-methylimidazole
+    Metal Salt:  cobalt(II) nitrate hexahydrate
+    Enzyme Name: endo-1,4-β-xylan xylanohydrolase
+
+    Composite Name: Xyl@mn/ZIF-67
+    MOF Name:  ZIF-67
+    Linker Salt: 2-methylimidazole
+    Metal Salt:  cobalt(II) nitrate hexahydrate, manganese(II) nitrate tetrahydrate
+    Enzyme Name: endo-1,4-β-xylan xylanohydrolase
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the name of the\
+    \ Material and the concentration and pH of the Linker, metal salt and enzyme/enzymes."
+  document_filenames: ["MOF_Parameter_Dataset/8/8.pdf"]
+  expected_answer: |
+    Composite name: Xyl@ZIF-67
+    Concentration of metal salts: 2.910 g
+    Concentration of linker: 3.284 g
+    Concentration of enzyme:  20 U/mL
+    pH value of metal salt solution: not provided in the text
+    pH value of linker solution: not provided in the text
+    pH value of enzyme solution: not provided in the text
+
+    Composite name: Xyl@ZIF-67
+    Concentration of metal salts: 2.910 g
+    Concentration of linker: 3.284 g
+    Concentration of enzyme:  20 U/mL
+    pH value of metal salt solution: not provided in the text
+    pH value of linker solution: not provided in the text
+    pH value of enzyme solution: not provided in the text
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the Metallion, the\
+    \ name of the Linker, the components and their sequence of additionand unsed during the immobilisation\
+    \ as well as the evaluation of activity (edukts and produkts)"
+  document_filenames: ["MOF_Parameter_Dataset/8/8.pdf"]
+  expected_answer: |
+    Composite name: Xyl@ZIF-67
+    Linker name: 2-MI
+    Reactants: xylan
+    Product: xylose
+    Metal ion and charge: Co^2+
+    Order of components: 1. endo-1,4-β-xylan xylanohydrolase, cobalt(II) nitrate hexahydrate, 2. 2-methylimidazole
+
+    Composite name: Xyl@mn/ZIF-67
+    Linker name: 2-MI
+    Reactants: xylan
+    Product: xylose
+    Metal ion and charge: Co^2+, Mn^2+
+    Order of components: 1. endo-1,4-β-xylan xylanohydrolase, cobalt(II) nitrate hexahydrate, 2. manganese(II) nitrate tetrahydrate, 3. 2-methylimidazole

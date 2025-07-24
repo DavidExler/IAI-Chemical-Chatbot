@@ -1,0 +1,17 @@
+<div id="chat-area">
+    <app-settings [(conversation)]="conversation"></app-settings>
+
+    <app-chat
+        [(conversation)]="conversation"
+        [(reloadMessages)]="reloadMessages"
+        [isGenerating]="isGenerating()"
+        [newPrompt]="newPrompt()"
+        [newResponse]="newResponse()"
+    ></app-chat>
+
+    <app-chat-prompt
+        (onPrompt)="prompt($event)"
+        [disabled]="isGenerating() || conversation() === null"
+        [generating]="isGenerating()"
+    ></app-chat-prompt>
+</div>

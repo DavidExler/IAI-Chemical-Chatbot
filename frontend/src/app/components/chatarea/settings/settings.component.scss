@@ -1,0 +1,42 @@
+mat-form-field {
+    width: 100%;
+}
+
+div.setting-group {
+    margin: 1em 0;
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+mat-selection-list {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+
+    mat-list-option {
+        width: fit-content;
+        max-width: 400px;
+
+        div {
+            width: fit-content;
+            line-height: 3.2em;
+            display: flex;
+            flex-wrap: nowrap;
+            justify-content: space-between;
+            gap: 5px;
+
+            span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 250px;
+            }
+        }
+    }
+}

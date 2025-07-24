@@ -1,0 +1,17 @@
+name: "Confluence Agent"
+messages:
+- content: "What is the head circumference of Luca Rettenberger?"
+  chain: "agent"
+  tool_names: ["confluence"]
+  expected_answer: "58.5 cm"
+- content: "Where can I find the kit vpn split config file?"
+  chain: "agent"
+  tool_names: ["confluence"]
+  expected_answer: "On this SCC website: https://www.scc.kit.edu/dienste/11112.php"
+- content: "Wer ist Vorsitzender der Institutsversammlung?"
+  chain: "agent"
+  tool_names: ["confluence"]
+  expected_answer: "Stephan Allgeier"
+- content: "Wann sind ILA-Sitzungen?"
+  chain: "agent"
+  tool_names: ["confluence"]

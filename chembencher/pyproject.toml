@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "chembench"
+version = "0.1.0"
+description = ""
+authors = ["Manuel Raimann <raimannma@outlook.de>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+langchain-openai = "^0.2.3"
+tqdm = "^4.66.6"
+chem-bench = {git = "https://git@github.com/lamalab-org/chem-bench.git"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

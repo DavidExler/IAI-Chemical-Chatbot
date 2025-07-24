@@ -1,0 +1,14 @@
+name: "Calculator Agent"
+messages:
+- content: "What is the perimeter of a rectangle with a length of 15 cm and a width of 14 cm?"
+  chain: "agent"
+  tool_names: ["calculator"]
+  expected_answer: "58 cm"
+- content: "What is the area of a rectangle with a length of 15 cm and a width of 14 cm?"
+  chain: "agent"
+  tool_names: ["calculator"]
+  expected_answer: "210 square cm"
+- content: "What is 37°C in Fahrenheit?"
+  chain: "agent"
+  tool_names: ["calculator"]
+  expected_answer: "98.6°F"

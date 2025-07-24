@@ -1,0 +1,42 @@
+services:
+  nginx-proxy:
+    image: nginxproxy/nginx-proxy:alpine
+    restart: always
+    ports:
+    - 80:80
+    volumes:
+    - conf:/etc/nginx/conf.d
+    - ./proxy.conf:/etc/nginx/conf.d/proxy.conf
+    - vhost:/etc/nginx/vhost.d
+    - html:/usr/share/nginx/html
+    - dhparam:/etc/nginx/dhparam
+#    - certs:/etc/nginx/certs:ro
+    - /var/run/docker.sock:/tmp/docker.sock:ro
+    healthcheck:
+      test: ["CMD", "nc", "-vz", "-w1", "localhost", "80"]
+      interval: 10s
+      timeout: 1s
+      retries: 30
+    environment:
+      ENABLE_IPV6: "true"
+      ENABLE_HTTP2: "true"
+      ENABLE_HTTP3: "true"
+      DEFAULT_ROOT: "302 http://iai-ml4home028.iai.kit.edu/chat/"
+      HTTPS_METHOD: nohttps
+    networks:
+    - webserver
+
+volumes:
+  conf:
+  vhost:
+  html:
+  dhparam:
+  certs:
+
+networks:
+  webserver:
+    driver: bridge
+    name: webserver
+    ipam:
+      config:
+      - subnet: 192.168.79.0/24

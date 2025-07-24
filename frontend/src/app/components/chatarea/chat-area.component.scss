@@ -1,0 +1,21 @@
+div#chat-area {
+    padding: 0 1em;
+    display: flex !important;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 95vh;
+    box-sizing: border-box;
+    gap: 2em;
+
+    app-settings {
+        display: block;
+        height: fit-content;
+    }
+
+    app-chat {
+        flex-grow: 1;
+        overflow-y: auto;
+        scrollbar-width: none;
+    }
+}

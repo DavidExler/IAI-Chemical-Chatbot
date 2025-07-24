@@ -1,0 +1,49 @@
+name: "Documents MOF Paper 3"
+document_filenames: ["MOF_Parameter_Dataset/3/3.pdf", "MOF_Parameter_Dataset/3/3.pdf"]
+messages:
+- content: "Name the in the text formulated MOF-Materials which contain enzymes or proteins. List\
+    \ for every MOF-Material in the text the name of the Material, MOF, Linker, metal salt, enzyme/enzymes.\
+    \ Every variation of one of the components results in a new material. Also name the Organism\
+    \ the protein/enzyme originates from (not necessary the organism it was expressed in)"
+  document_filenames: ["MOF_Parameter_Dataset/3/3.pdf", "MOF_Parameter_Dataset/3/3_SI.pdf"]
+  expected_answer: |
+    Composite Name: OPP–MOF
+    MOF Name: ZIF-8
+    Linker Salt: zinc acetate
+    Metal Salt: 2-methylimmidazole
+    Enzyme Name: orange peel peroxidase
+    Organism: Citrus sinenses
+- content: "Name the in the text formulated MOF-Materials which contain enzymes or proteins. List\
+    \ for every MOF-Material in the text the name of the Material and the concentration of the\
+    \ MOF, Linker, metal salt and enzyme/enzymes. Also name the pH of the Linker, metal salt and\
+    \ Enzymes. Every variation of one of the components results in a new material."
+  document_filenames: ["MOF_Parameter_Dataset/3/3.pdf", "MOF_Parameter_Dataset/3/3_SI.pdf"]
+  expected_answer: |
+    Composite name: OPP–MOF
+    Concentration of metal salts: 8 mmol
+    Concentration of linker: 24 mmol
+    Concentration of enzyme: 1.2 mg/mL
+    pH value of metal salt solution: not provided in the text
+    pH value of linker solution: not provided in the text
+    pH value of enzyme solution: 7.0
+- content: "List for every MOF-Material in the text the name of the Material and the pH of the\
+    \ Linker, metal salt and enzyme/enzymes. Every variation of one of the components results\
+    \ in a new material."
+  document_filenames: ["MOF_Parameter_Dataset/3/3.pdf", "MOF_Parameter_Dataset/3/3_SI.pdf"]
+  expected_answer: |
+    Name Komposit: OPP–MOF
+    pH-Wert Metallsalzlösung: not provided in the text
+    pH-Wert Linkerlösung: not provided in the text
+    pH-Wert Enzymlösung: 7.0
+- content: "Name the in the text formulated MOF-Materials which contain enzymes or proteins. List\
+    \ for every MOF-Material in the text the name of the Material, educt of enzyme catalysis and\
+    \ products of enzyme catalysis. Every variation of one of the components results in a new\
+    \ material."
+  document_filenames: ["MOF_Parameter_Dataset/3/3.pdf", "MOF_Parameter_Dataset/3/3_SI.pdf"]
+  expected_answer: |
+    Composite name: OPP–MOF
+    Linker name: 2-methylimidazole
+    Reactants: Congo red, methylene blue, guaiacol
+    Product: tetraguaiacol
+    Metal ion and charge: Zn^2+
+    Order of components: 1. 2-methylimidazole, orange peel peroxidase, 2. zinc acetate

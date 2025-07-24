@@ -1,0 +1,88 @@
+@use "@angular/material" as mat;
+
+:host {
+    font-size: 14px;
+    font-family: ui-sans-serif, Roboto, sans-serif;
+    background: mat.m2-get-color-from-palette(
+        mat.$m2-dark-theme-background-palette,
+        background,
+        0.7
+    );
+
+    header {
+        height: 80px;
+        margin-bottom: 1.5em;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        h1 {
+            margin: 0;
+        }
+    }
+
+    section.conversations {
+        width: 90%;
+        margin: 0 auto;
+        height: calc(100vh - 80px - 1.5em);
+
+        font-size: 14px;
+
+        button {
+            justify-content: space-between;
+
+            h3,
+            span {
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+                padding: 0;
+                margin: 0;
+                color: white;
+                font-family: ui-sans-serif, Roboto, sans-serif;
+            }
+
+            button :has(h2) {
+                margin-bottom: 2em;
+            }
+
+            &.active {
+                background: mat.m2-get-color-from-palette(
+                    mat.$m2-pink-palette,
+                    A700
+                );
+                color: white;
+            }
+        }
+
+        button#add-conversation-button {
+            height: 36px;
+        }
+
+        div#past-conversations {
+            margin-top: 20px;
+            overflow: scroll;
+            scrollbar-width: none;
+            max-height: calc(100vh - 36px - 80px - 20px - 1.5em);
+
+            div {
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: nowrap;
+                align-items: center;
+
+                span {
+                    font-size: 14px;
+                    width: 100%;
+                    max-width: 170px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    display: inline-block;
+                    text-align: left;
+                    vertical-align: middle;
+                }
+            }
+        }
+    }
+}

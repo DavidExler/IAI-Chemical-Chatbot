@@ -1,0 +1,48 @@
+services:
+  elasticsearch:
+    image: elasticsearch:8.15.2
+    restart: always
+    volumes:
+    - ./data:/usr/share/elasticsearch/data
+    environment:
+      ES_JAVA_OPTS: -Xms2g -Xmx2g
+      bootstrap.memory_lock: true
+      discovery.type: single-node
+      xpack.security.enabled: false
+      xpack.security.enrollment.enabled: false
+      http.cors.enabled: true
+      http.cors.allow-origin: "http://iai-ml4home028.iai.kit.edu:8080"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -vq '\"status\"\
+          :\"red'"]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+    ports:
+    - "9200:9200"
+
+  elasticvue:
+    image: cars10/elasticvue
+    restart: always
+    ports:
+    - "8080:8080"
+    environment:
+      ELASTICVUE_CLUSTERS: '[{"name": "default", "uri": "http://iai-ml4home028.iai.kit.edu:9200"}]'
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+networks:
+  default:
+    name: elastic
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 192.168.77.0/24

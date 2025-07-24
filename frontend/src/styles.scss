@@ -1,0 +1,38 @@
+@use "@angular/material" as mat;
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background: #111217 url("../public/background.svg") no-repeat fixed left top;
+    background-size: 100vw 120vh;
+}
+
+.center {
+    text-align: center;
+}
+
+.mat-expansion-panel {
+    background: mat.m2-get-color-from-palette(
+        mat.$m2-dark-theme-background-palette,
+        background,
+        0.7
+    ) !important;
+}
+
+mat-form-field
+    div.mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
+    display: none;
+}
+
+.mat-mdc-card-actions {
+    min-height: unset !important;
+}
+
+code {
+    color: mat.m2-get-color-from-palette(mat.$m2-cyan-palette, A700);
+}

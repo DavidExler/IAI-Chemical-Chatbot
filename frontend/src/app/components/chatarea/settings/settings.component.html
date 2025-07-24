@@ -1,0 +1,126 @@
+@if (chains | async; as allChains) {
+    @if (conversation(); as conversation) {
+        <mat-expansion-panel expanded>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Settings</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="setting-group">
+                <mat-label>Which chain do you want to use?</mat-label>
+                <br />
+                <mat-radio-group
+                    (change)="changeChain($event)"
+                    [value]="conversation.chain"
+                    color="primary"
+                >
+                    @for (c of allChains; track c.path) {
+                        <mat-radio-button
+                            color="primary"
+                            [value]="c.path"
+                            [matTooltip]="c.description"
+                        >
+                            {{ c.name }}
+                        </mat-radio-button>
+                    }
+                </mat-radio-group>
+            </div>
+            @if (
+                availablePrompts(allChains, conversation.chain);
+                as availablePrompts
+            ) {
+                @if (availablePrompts.length > 1) {
+                    <div class="setting-group">
+                        <mat-label>Which prompt do you want to use?</mat-label>
+                        <br />
+                        <mat-radio-group
+                            (change)="changePrompt($event)"
+                            [value]="conversation.prompt"
+                            color="primary"
+                        >
+                            @for (p of availablePrompts; track p) {
+                                <mat-radio-button
+                                    color="primary"
+                                    [value]="p"
+                                    [matTooltip]="p"
+                                >
+                                    {{ p }}
+                                </mat-radio-button>
+                            }
+                        </mat-radio-group>
+                    </div>
+                }
+            }
+            @if (
+                availableTools(allChains, conversation.chain);
+                as availableTools
+            ) {
+                @if (availableTools.length > 0) {
+                    <div class="setting-group">
+                        <mat-label>Which tools do you want to use?</mat-label>
+                        <mat-form-field appearance="outline">
+                            <mat-select
+                                (selectionChange)="changeTools($event)"
+                                [value]="conversation.tools"
+                                placeholder="Select Tools"
+                                multiple
+                            >
+                                @for (t of availableTools; track t) {
+                                    <mat-option [value]="t">
+                                        {{ t }}</mat-option
+                                    >
+                                }
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                }
+            }
+            @if (supportsDocumentUpload(allChains, conversation.chain)) {
+                <div class="setting-group">
+                    <mat-label>Upload documents</mat-label>
+                    <app-file-upload
+                        [conversation]="conversation"
+                        (onFileUploaded)="onFileUploaded($event)"
+                    ></app-file-upload>
+                </div>
+
+                @if (documents | async; as documents) {
+                    @if (documents.length > 0) {
+                        <div class="setting-group">
+                            <mat-label>Select Documents</mat-label>
+                            <mat-selection-list
+                                (ngModelChange)="changeDocuments($event)"
+                                [ngModel]="conversation.documents"
+                                multiple
+                            >
+                                @for (
+                                    document of documents;
+                                    track document.uuid
+                                ) {
+                                    <mat-list-option
+                                        togglePosition="before"
+                                        [value]="document.uuid"
+                                        color="primary"
+                                    >
+                                        <div>
+                                            <span
+                                                [innerText]="document.title"
+                                            ></span>
+                                            <button
+                                                mat-icon-button
+                                                color="warn"
+                                                (click)="
+                                                    deleteDocument(document)
+                                                "
+                                            >
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </div>
+                                    </mat-list-option>
+                                }
+                            </mat-selection-list>
+                        </div>
+                    }
+                }
+            }
+        </mat-expansion-panel>
+    }
+}

@@ -1,0 +1,32 @@
+@use "@angular/material" as mat;
+
+:host {
+    display: flex;
+    flex-wrap: nowrap;
+
+    app-sidebar {
+        height: 100vh;
+        width: 250px;
+        min-width: 250px;
+        max-width: 250px;
+        border-right: 2px solid
+            mat.m2-get-color-from-palette(mat.$m2-pink-palette, A700);
+        box-sizing: border-box;
+        color: white;
+    }
+
+    section#main {
+        display: inline-block;
+        width: calc(100% - 250px);
+        height: 100vh;
+        padding: 2.5vh 0;
+        box-sizing: border-box;
+
+        > * {
+            display: block;
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    }
+}

@@ -1,0 +1,39 @@
+name: "Documents MOF Paper 4"
+document_filenames: ["MOF_Parameter_Dataset/4/4.pdf", "MOF_Parameter_Dataset/4/4_SI.pdf"]
+messages:
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the name of the\
+    \ Material, the MOF, Linker, metal salt and enzyme/enzymes. Also name the Organism the protein/enzyme\
+    \ originates from (not necessary the organism it was expressed in)"
+  document_filenames: ["MOF_Parameter_Dataset/4/4.pdf", "MOF_Parameter_Dataset/4/4_SI.pdf"]
+  expected_answer: |
+    Composite Name: laccase@HKUST-1
+    MOF Name: HKUST-1
+    Linker Salt: 1,3,5-benzenetricarboxylic acid
+    Metal Salt: Cupric acetate monohydrate
+    Enzyme Name: Laccase
+    Organism: Trametes versicolor
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the Concentration\
+    \ and the pH of the Linker, metal salt and enzyme/enzymes"
+  document_filenames: ["MOF_Parameter_Dataset/4/4.pdf", "MOF_Parameter_Dataset/4/4_SI.pdf"]
+  expected_answer: |
+    Composite name: laccase@HKUST-1
+    Concentration of metal salts: 87.5 mM
+    Concentration of linker: 25 mM
+    Concentration of enzyme: 2 g/mL
+    pH value of metal salt solution: 7
+    pH value of linker solution: 7
+    pH value of enzyme solution: 7
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the Metallion, the\
+    \ name of the Linker, the components and their sequence of additionand unsed during the immobilisation\
+    \ as well as the evaluation of activity (edukts and produkts)"
+  document_filenames: ["MOF_Parameter_Dataset/4/4.pdf", "MOF_Parameter_Dataset/4/4_SI.pdf"]
+  expected_answer: |
+    Composite name: laccase@HKUST-1
+    Linker name: BTC
+    Reactants: BPA
+    Product: -
+    Metal ion and charge: Cu^2+
+    Order of components: 1. cupric acetate monohydrate, laccase, 2. 1,3,5-benzenetricarboxylic acid

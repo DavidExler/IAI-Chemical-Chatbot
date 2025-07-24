@@ -1,0 +1,72 @@
+@use "@angular/material" as mat;
+
+div#messages {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    gap: 1em;
+    color: white;
+    overflow: scroll;
+    scrollbar-width: none;
+    height: 100%;
+    overflow-anchor: none;
+
+    mat-card {
+        max-width: 80%;
+        min-width: 300px;
+
+        &.right {
+            align-self: flex-end;
+            background: mat.m2-get-color-from-palette(
+                mat.$m2-dark-theme-background-palette,
+                background
+            );
+        }
+
+        &.left {
+            align-self: flex-start;
+        }
+
+        mat-card-content {
+            display: flex;
+            flex-wrap: nowrap;
+            flex-direction: column;
+            gap: 0.5em;
+
+            markdown {
+                width: 100%;
+            }
+
+            .steps {
+                background: mat.m2-get-color-from-palette(
+                    mat.$m2-dark-theme-background-palette,
+                    background
+                );
+
+                div.step-description {
+                    padding: 1em;
+
+                    h3 {
+                        margin-top: 1em !important;
+                    }
+                }
+            }
+        }
+
+        mat-card-actions {
+            width: 30px;
+            height: 30px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+
+            button {
+                padding: 0;
+
+                mat-icon {
+                    line-height: 30px;
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+}

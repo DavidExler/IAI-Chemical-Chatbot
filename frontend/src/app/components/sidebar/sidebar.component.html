@@ -1,0 +1,45 @@
+<header><h1 class="center">IAI - Chatbot</h1></header>
+
+<section class="conversations">
+    <button
+        (click)="createConversation()"
+        color="primary"
+        id="add-conversation-button"
+        mat-flat-button
+        title="Add Conversation"
+    >
+        <h3>Create new Conversation</h3>
+    </button>
+    <div #pastConversations id="past-conversations">
+        @for (conv of conversations | async; track conv.uuid) {
+            @if (getUpdatedConversation(conv); as c) {
+                <div>
+                    <button
+                        color="primary"
+                        mat-button
+                        (click)="selectConversation(c)"
+                        [class.active]="conversation()?.uuid === c.uuid"
+                    >
+                        <span
+                            [innerText]="
+                                c.title
+                                    .replaceAll('\n', '')
+                                    .replaceAll('<br>', '')
+                            "
+                        ></span>
+                    </button>
+                    <button
+                        mat-icon-button
+                        color="warn"
+                        title="Delete Conversation"
+                        (click)="deleteConversation(c)"
+                    >
+                        <mat-icon class="delete-conversation-icon"
+                            >delete</mat-icon
+                        >
+                    </button>
+                </div>
+            }
+        }
+    </div>
+</section>

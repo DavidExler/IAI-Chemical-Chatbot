@@ -1,0 +1,36 @@
+name: "Documents MOF Paper 6"
+document_filenames: ["MOF_Parameter_Dataset/6/6.pdf", "MOF_Parameter_Dataset/6/6_SI.pdf"]
+messages:
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the name of the\
+    \ MOF, Linker, metal salt, enzyme/enzymes. Also name the Organism the protein/enzyme originates\
+    \ from (not necessary the organism it was expressed in)"
+  document_filenames: ["MOF_Parameter_Dataset/6/6.pdf", "MOF_Parameter_Dataset/6/6_SI.pdf"]
+  expected_answer: |
+    MOF Name:  ZIF-90
+    Linker Salt: zinc nitrate
+    Metal Salt:  imidazolate-2-carboxaldehyde
+    Enzyme Name: catalase
+    Organism: bovine liver
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the  concentration\
+    \ and pH of the Linker, metal salt and enzyme/enzymes."
+  document_filenames: ["MOF_Parameter_Dataset/6/6.pdf", "MOF_Parameter_Dataset/6/6_SI.pdf"]
+  expected_answer: |
+    Concentration of metal salts: 371.3 mg
+    Concentration of linker: 480.0 mg
+    Concentration of enzyme: 25.0 mg
+    pH value of metal salt solution: not provided in the text
+    pH value of linker solution: not provided in the text
+    pH value of enzyme solution: not provided in the text
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the Metallion, the\
+    \ name of the Linker, the components and their sequence of additionand unsed during the immobilisation\
+    \ as well as the evaluation of activity (edukts and produkts)"
+  document_filenames: ["MOF_Parameter_Dataset/6/6.pdf", "MOF_Parameter_Dataset/6/6_SI.pdf"]
+  expected_answer: |
+    Linker name: ICA
+    Reactants: hydrogen peroxide
+    Products: water, oxygen
+    Metal ion and charge: Zn^2+
+    Order of components: 1. zinc nitrate, 2. imidazolate-2-carboxaldehyde, catalase

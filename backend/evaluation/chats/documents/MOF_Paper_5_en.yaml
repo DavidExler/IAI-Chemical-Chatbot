@@ -1,0 +1,39 @@
+name: "Documents MOF Paper 5"
+document_filenames: ["MOF_Parameter_Dataset/5/5.pdf"]
+messages:
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the name of the\
+    \ Material, MOF, Linker, metal salt, enzyme/enzymes. Also name the Organism the protein/enzyme\
+    \ originates from (not necessary the organism it was expressed in)"
+  document_filenames: ["MOF_Parameter_Dataset/5/5.pdf"]
+  expected_answer: |
+    Composite Name: protease@MOF
+    MOF Name:  ZIF-8
+    Linker Salt: 2-methylimidazole
+    Metal Salt:  zinc nitrate
+    Enzyme Name: fibrinolytic protease CHA410
+    Organism: Bacillus sp. CHA410
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the name of the\
+    \ Material and the concentration and the pH of the Linker, metal salt and enzyme/enzymes."
+  document_filenames: ["MOF_Parameter_Dataset/5/5.pdf"]
+  expected_answer: |
+    Composite name: protease@MOF
+    Concentration of metal salts: 1 mM
+    Concentration of linker: 1 mM
+    Concentration of enzyme: 0.02 mg/mL
+    pH value of metal salt solution: not provided in the text
+    pH value of linker solution: not provided in the text
+    pH value of enzyme solution: not provided in the text
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the Metallion, the\
+    \ name of the Linker, the components and their sequence of additionand unsed during the immobilisation\
+    \ as well as the evaluation of activity (edukts and produkts)"
+  document_filenames: ["MOF_Parameter_Dataset/5/5.pdf"]
+  expected_answer: |
+    Composite name: protease@MOF
+    Linker name: 2-methylimidazole
+    Reactants: fibrin, hemoglobin, casein, transferrin, albumin, protein hydrolysate of Thunnus tonggol
+    Product: -
+    Metal ion and charge: Zn^2+
+    Order of components: simultaneously

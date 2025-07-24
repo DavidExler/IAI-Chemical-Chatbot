@@ -1,0 +1,130 @@
+x-backend-service: &backend-service
+  restart: always
+  env_file: .env
+  networks:
+  - webserver
+  - vector-db
+  - inference
+  - chat_history
+
+x-chat_history-service: &chat_history-service
+  image: postgres:16
+  restart: always
+  env_file: .env
+  command: ["postgres", "-c", "log_statement=all"]
+  healthcheck:
+    test: ["CMD-SHELL", "pg_isready"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
+  networks:
+  - chat_history
+
+services:
+  backend:
+    <<: *backend-service
+    image: ghcr.io/raimannma/iai-llm/backend:latest # self-hosted (ghrc)
+    environment:
+      HF_HOME: /hf_cache
+      KEYCLOAK_REALM_URI: http://iai-ml4home028.iai.kit.edu/auth/realms/chatbot
+      LLM_MODEL_ID: meta-llama/Meta-Llama-3.1-70B-Instruct
+      #LLM_MODEL_ID: meta-llama/Llama-3.3-70B-Instruct
+      LLM_INTERFACE_URL: http://llm-model/v1/
+      EVAL_INTERFACE_URL: http://141.52.44.15:5555/
+      TEI_INTERFACE_URL: http://embeddings-model/
+      UNSTRUCTURED_URL: http://unstructured:8000/
+      CHAT_HISTORY_DB: postgresql+psycopg://${CHAT_HISTORY_USER}:${CHAT_HISTORY_PASSWORD}@chat_history:5432/${CHAT_HISTORY_DB}
+      VIRTUAL_HOST: iai-ml4home028.iai.kit.edu
+      VIRTUAL_PORT: 8080
+      SERVER_ROOT_PATH: /chatbot
+      VIRTUAL_PATH: /chatbot
+      IS_DEVELOPMENT: "false"
+    depends_on:
+      chat_history:
+        condition: service_healthy
+    volumes:
+      - ./app:/code/app #local builds
+      - ./documents:/code/documents
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 60s
+      timeout: 30s
+      retries: 5
+      start_period: 3m
+
+  chat_history:
+    <<: *chat_history-service
+    environment:
+      PGDATA: /data/postgres
+      POSTGRES_DB: $CHAT_HISTORY_DB
+      POSTGRES_USER: $CHAT_HISTORY_USER
+      PGUSER: $CHAT_HISTORY_USER
+      POSTGRES_PASSWORD: $CHAT_HISTORY_PASSWORD
+    volumes:
+    - ./database/data/:/data/postgres
+    - ./database/init/:/docker-entrypoint-initdb.d:ro
+### 
+### Uncomment the following section to enable staging environment.
+### The staging environment can act as a testing ground for new features before they are deployed to production.
+### The backend environment can then continue to use the production build, on the hosted ghrc.
+### If hosting a backend to run continuously, tend to the image and correct the git in use above.
+###
+#  backend-staging:
+#    <<: *backend-service
+#    build:
+#      context: .
+#      dockerfile: Dockerfile
+#    environment:
+#      HF_HOME: /hf_cache
+#      KEYCLOAK_REALM_URI: http://iai-ml4home028.iai.kit.edu/auth/realms/chatbot
+#      LLM_INTERFACE_URL: http://llm-model/v1/
+#      EVAL_INTERFACE_URL: http://141.52.44.15:5555/
+#      UNSTRUCTURED_URL: http://unstructured:8000/
+#      TEI_INTERFACE_URL: http://embeddings-model/
+#      CHAT_HISTORY_DB: postgresql+psycopg://${CHAT_HISTORY_USER}:${CHAT_HISTORY_PASSWORD}@chat_history-staging:5432/${CHAT_HISTORY_DB}
+#      VIRTUAL_HOST: iai-ml4home028.iai.kit.edu
+#      VIRTUAL_PORT: 8080
+#      SERVER_ROOT_PATH: /chatbot-staging
+#      VIRTUAL_PATH: /chatbot-staging
+#      IS_DEVELOPMENT: "true"
+#    depends_on:
+#      chat_history-staging:
+#        condition: service_healthy
+#    volumes:
+#    - ./documents-staging:/code/documents
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+#      interval: 60s
+#      timeout: 30s
+#      retries: 5
+#      start_period: 3m
+#    labels:
+#      com.centurylinklabs.watchtower.enable: false
+#  chat_history-staging:
+#    <<: *chat_history-service
+#    environment:
+#      PGDATA: /data/postgres
+#      POSTGRES_DB: $CHAT_HISTORY_DB
+#      POSTGRES_USER: $CHAT_HISTORY_USER
+#      PGUSER: $CHAT_HISTORY_USER
+#      POSTGRES_PASSWORD: $CHAT_HISTORY_PASSWORD
+#    ports:
+#    - "127.0.0.1:5432:5432"
+#    volumes:
+#    - ./database-staging/data/:/data/postgres
+#    - ./database-staging/init/:/docker-entrypoint-initdb.d:ro
+
+networks:
+  chat_history:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 192.168.74.0/24
+  inference:
+    external: true
+  webserver:
+    external: true
+  vector-db:
+    external: true
+  monitoring:
+    external: true

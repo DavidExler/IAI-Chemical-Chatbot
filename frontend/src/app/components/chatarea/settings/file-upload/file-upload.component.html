@@ -1,0 +1,57 @@
+@if (progress(); as progress) {
+    <div id="file-upload-progress">
+        @if (progress < 0.99) {
+            <p>Uploading</p>
+            <mat-progress-bar
+                mode="determinate"
+                [value]="100 * progress"
+            ></mat-progress-bar>
+            {{ progress * 100 | number: "1.0-0" }}%
+        } @else {
+            <p>Parsing Documents</p>
+            <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
+        <button
+            mat-icon-button
+            (click)="cancelUpload()"
+            title="Cancel Upload"
+            color="warn"
+        >
+            <mat-icon>cancel</mat-icon>
+        </button>
+    </div>
+} @else {
+    <div id="file-upload-container">
+        <input
+            #fileUpload
+            (change)="onFileSelected($event)"
+            accept=".pdf,.docx"
+            id="file-upload"
+            multiple
+            type="file"
+        />
+
+        <label for="file-upload">
+            <div>
+                <h3>Drop files here or click to upload</h3>
+            </div>
+            <button
+                mat-flat-button
+                color="primary"
+                (click)="fileUpload.click()"
+            >
+                Upload
+                <mat-icon>cloud_upload</mat-icon>
+            </button>
+        </label>
+    </div>
+}
+
+@if (error; as error) {
+    <div id="file-upload-error">
+        <mat-error>
+            <mat-icon color="warn">error</mat-icon>
+            <span>File upload failed: {{ error }}</span>
+        </mat-error>
+    </div>
+}

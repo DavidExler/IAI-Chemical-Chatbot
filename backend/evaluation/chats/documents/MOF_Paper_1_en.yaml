@@ -1,0 +1,96 @@
+name: "Documents MOF Paper 1"
+document_filenames: ["MOF_Parameter_Dataset/1/1.pdf", "MOF_Parameter_Dataset/1/1_SI.pdf"]
+messages:
+- content: "List for every MOF-Material in the text the name of the Material, MOF, Linker, metal\
+    \ salt, enzyme/enzymes. Every variation of one of the components results in a new material."
+  document_filenames: ["MOF_Parameter_Dataset/1/1.pdf", "MOF_Parameter_Dataset/1/1_SI.pdf"]
+  expected_answer: |
+    Name Komposit: Enzymes−ZIF-8
+    MOF-Name: ZIF-8
+    Linkersalz: 2-methylimidazole
+    Metallsalz: zinc acetate
+    Enzymname: horseradish peroxidase, glucose oxidase
+
+    Composite Name: FITC-Labeled GOx@dZIF-8
+    Linker Salt: 2-methylimidazole
+    Metal Salt: zinc acetate
+    Enzyme Name: glucose oxidase, bovine serum albumin
+
+    Composite Name: RhB-Labeled POD@dZIF-8
+    Linker Salt: 2-methylimidazole
+    Metal Salt: zinc acetate
+    Enzyme Name: horseradish peroxidase
+- content: "List for every MOF-Material in the text the name of the Material and the concentration\
+    \ and the pH value of the Linker, metal salt and enzyme/enzymes. Every variation of one of\
+    \ the components results in a new material."
+  document_filenames: ["MOF_Parameter_Dataset/1/1.pdf", "MOF_Parameter_Dataset/1/1_SI.pdf"]
+  expected_answer: |
+    Composite name: Enzymes−ZIF-8
+    Concentration of metal salts: 40 mM
+    Concentration of linker: 160 mM
+    Concentration of enzyme: 5 mg, 5 mg
+    pH value of metal salt solution: not provided in the text
+    pH value of linker solution: not provided in the text
+    pH value of enzyme solution: not provided in the text
+
+    Composite name: FITC-Labeled GOx@dZIF-8
+    Concentration of metal salts: 40 mM
+    Concentration of linker: 160 mM
+    Concentration of enzyme: 10 mg
+    pH value of metal salt solution: not provided in the text
+    pH value of linker solution: not provided in the text
+    pH value of enzyme solution: not provided in the text
+
+    Composite name: RhB-Labeled POD@dZIF-8
+    Concentration of metal salts: 40 mM
+    Concentration of linker: 160 mM
+    Concentration of enzyme: 10 mg
+    pH value of metal salt solution: not provided in the text
+    pH value of linker solution: not provided in the text
+    pH value of enzyme solution: not provided in the text
+- content: "List for every MOF-Material in the text the name of the Material and the pH of the\
+    \ Linker, metal salt and enzyme/enzymes. Every variation of one of the components results\
+    \ in a new material."
+  document_filenames: ["MOF_Parameter_Dataset/1/1.pdf", "MOF_Parameter_Dataset/1/1_SI.pdf"]
+  expected_answer: |
+    Composite name: Enzymes−ZIF-8
+    The pH values are not provided in the Text.
+
+    Composite name: FITC-Labeled GOx@dZIF-8
+    The pH values are not provided in the Text.
+
+    Composite name: RhB-Labeled POD@dZIF-8
+    The pH values are not provided in the Text.
+- content: "List for every MOF-Material in the text the name of the Material and the Linker, educt\
+    \ of enzyme catalysis and products of enzyme catalysis and the Metalion and its charge. Every\
+    \ variation of one of the components results in a new material."
+  document_filenames: ["MOF_Parameter_Dataset/1/1.pdf", "MOF_Parameter_Dataset/1/1_SI.pdf"]
+  expected_answer: |
+    Composite name: Enzymes−ZIF-8
+    Linker name: 2-methylimidazole
+    Reactants: glucose
+    Product: ABTS*+
+    Metal ion and charge: Zn^2+
+
+    Composite name: FITC-Labeled GOx@dZIF-8
+    Linker name: 2-methylimidazole
+    Reactants: glucose, O2
+    Products: gluconic acid, H2O2
+    Metal ion and charge: Zn^2+
+
+    Composite name: RhB-Labeled POD@dZIF-8
+    Linker name: 2-methylimidazole
+    Reactants: H2O2, ABTS
+    Products: H2O, ABTS*+
+    Metal ion and charge: Zn^2+
+- content: "Answer (a summarizing paragraph with ALL MOF-related concepts mentioned in the uploaded\
+    \ documents but excluding everything else. Includes ALL quantities (number of moles) and units\
+    \ (e.g. mmol, min, degC, g, cm, mL, mM, ppm, mg/mL, nm, µL, mol etc.) and exact names (e.g.\
+    \ Girrus sienes, a fruit waste etc.). Special emphasis on composite, MOF, and chemical linker\
+    \ names, metal salt names, as well as enzyme and organism names, number of moles (quantities)\
+    \ all pH-values of the metal salts, linkers, and enzymes, chemical concentrations, chemical\
+    \ masses, along with everything related to the enzymatic reaction (reactants, products etc.):"
+  document_filenames: ["MOF_Parameter_Dataset/1/1.pdf", "MOF_Parameter_Dataset/1/1_SI.pdf"]
+  expected_answer: |
+    Here is a summarizing paragraph of all MOF-related concepts mentioned in the uploaded documents:
+    The study involves the synthesis of metal-organic frameworks (MOFs) including zeolite imidazole frameworks (ZIFs), specifically ZIF-8, ZIF-90, and MAF-7, using 2-methylimidazole (HmIM) as a linker and zinc acetate as a metal salt. The MOF, dZIF-8, was synthesized and functionalized with enzymes, including peroxidase (POD) and glucose oxidase (GOx), with loading efficiencies of 13.5% and 31.4%, respectively. The enzymatic reaction involved the oxidation of glucose, with reactant concentrations of 0.05-0.25 mM or 0.25-4 mM, and product concentrations of 1 mM glucose solution with 10 mM different interferents. The MOF-enzyme composite material was characterized using various buffers, including carbonate buffer at pH 8.0 and 9.0, with concentrations of 0.5 M. The study also involved the synthesis of a dZIF-8 biohybrid hydrogel using 40 mg of dZIF-8 biohybrid powders, 1 mL of 5 mM ABTS solution, and CaCl2 (60 M) dissolved into 0.05 M PAA solution.

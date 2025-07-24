@@ -1,0 +1,108 @@
+services:
+#  grafana:
+#    image: grafana/grafana:latest
+#    restart: always
+#    volumes:
+#    - grafana:/var/lib/grafana
+#    - ./defaults.ini:/usr/share/grafana/conf/defaults.ini:ro
+#    - ./grafana/dashboards:/dashboards
+#    - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/main.yaml
+#    - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/prometheus.yaml
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+#      interval: 10s
+#      timeout: 3s
+#      retries: 3
+#    depends_on:
+#      prometheus:
+#        condition: service_healthy
+#    networks:
+#    - monitoring
+#    - webserver
+#    environment:
+#      VIRTUAL_HOST: iai-ml4home028.iai.kit.edu
+#      VIRTUAL_PORT: 3000
+#      VIRTUAL_PATH: /monitoring
+
+  prometheus:
+    image: prom/prometheus
+    restart: always
+    volumes:
+    - ./prometheus.yaml:/etc/prometheus/prometheus.yml:ro
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9090/-/healthy"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+    - monitoring
+
+  node-exporter:
+    image: prom/node-exporter
+    restart: always
+    volumes:
+    - /proc:/host/proc:ro
+    - /sys:/host/sys:ro
+    - /:/rootfs:ro
+    expose:
+    - 9100
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:9100/metrics"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+    - monitoring
+
+  dcgm-exporter:
+    image: nvidia/dcgm-exporter
+    restart: always
+    expose:
+    - 9400
+    networks:
+    - monitoring
+    cap_add:
+    - SYS_ADMIN
+    healthcheck:
+      test: timeout 3s bash -c ':> /dev/tcp/127.0.0.1/9400' || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 4
+            capabilities: [gpu]
+
+  watchtower:
+    image: containrrr/watchtower
+    restart: always
+    environment:
+      WATCHTOWER_WARN_ON_HEAD_FAILURE: never
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 600 --cleanup --rolling-restart
+
+  autoheal:
+    image: willfarrell/autoheal
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    environment:
+      WEBHOOK_URL: https://discord.com/api/webhooks/1190444878849650688/ck8GGhJ2N5X_-smePMojPJGOoMRCBQZZYPO_iDQvaFeK22720jD6FKj-Sv_c6-SpqjQQ
+      AUTOHEAL_CONTAINER_LABEL: all
+
+volumes:
+  grafana:
+
+networks:
+  monitoring:
+    name: monitoring
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 192.168.75.0/24
+  webserver:
+    external: true

@@ -1,0 +1,65 @@
+name: "Documents MOF Paper 7"
+document_filenames: ["MOF_Parameter_Dataset/7/7.pdf", "MOF_Parameter_Dataset/7/7_SI.pdf"]
+messages:
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the name of the\
+    \ Material, MOF, Linker, metal salt, enzyme/enzymes. Also name the Organism the protein/enzyme\
+    \ originates from (not necessary the organism it was expressed in)"
+  document_filenames: ["MOF_Parameter_Dataset/7/7.pdf", "MOF_Parameter_Dataset/7/7_SI.pdf"]
+  expected_answer: |
+    Composite Name: NH2-MIL-53(Al)/laccase
+    MOF Name:  NH2-MIL-53(Al)
+    Linker Salt: 2-amino-terephthalic acid
+    Metal Salt: aluminum chloride
+    Enzyme Name: laccase
+    Organism: Trametes versicolor
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the name of the\
+    \ Material and the concentration and pH of the Linker, metal salt and enzyme/enzymes."
+  document_filenames: ["MOF_Parameter_Dataset/7/7.pdf", "MOF_Parameter_Dataset/7/7_SI.pdf"]
+  expected_answer: |
+    Composite name: NH2-MIL-53(Al)/laccase
+    Concentration of metal salts: 75.12 mg, 0.253 mmol
+    Concentration of linker: 100 mg
+    Concentration of enzyme:  100 mg
+    pH value of metal salt solution: not provided in the text
+    pH value of linker solution: not provided in the text
+    pH value of enzyme solution: not provided in the text
+- content: "output for every enzyme-MOF-material mentioned in the text (every variation of mass,\
+    \ concentration etc. results in a new Material) an entery, which contains the Metallion, the\
+    \ name of the Linker, the components and their sequence of additionand unsed during the immobilisation\
+    \ as well as the evaluation of activity (edukts and produkts)"
+  document_filenames: ["MOF_Parameter_Dataset/7/7.pdf", "MOF_Parameter_Dataset/7/7_SI.pdf"]
+  expected_answer: |
+    Composite name: NH2-MIL-53(Al)/laccase
+    Linker name: NH2-BDC
+    Reactants: ABTS
+    Product: -
+    Metal ion and charge: Al^3+
+    Order of components: 1. 2-amino-terephthalic acid, 2. aluminum chloride, 3. laccase
+- content: "write a verry detailed summary of the text which inclueds all constructed MOF-Enzyme\
+    \ materials and their related experiments"
+  document_filenames: ["MOF_Parameter_Dataset/7/7.pdf", "MOF_Parameter_Dataset/7/7_SI.pdf"]
+  expected_answer: |
+    "Summary of the Text
+
+    The text describes the development of a one-pot synthesis method for creating microporous nanoscale metal-organic frameworks (NMOFs) conjugated with laccase as a promising biocatalyst. The authors successfully immobilized laccase into amine-functionalized NMOFs (NH2-MIL-53(Al)) using a green synthesis approach.
+
+    Constructed MOF-Enzyme Materials
+
+    The following MOF-enzyme materials were constructed:
+
+    NH2-MIL-53(Al)/Laccase: This material was synthesized using a one-pot method, where laccase was immobilized into NH2-MIL-53(Al) NMOFs. The resulting material showed good reusability, retaining 63% of its initial activity after being reused 10 times.
+
+    Related Experiments
+
+    Several experiments were conducted to characterize the NH2-MIL-53(Al)/Laccase material:
+
+    FTIR Analysis: FTIR spectra showed that laccase was successfully immobilized into the NH2-MIL-53(Al) structure, with both the enzyme and NMOF remaining intact.
+    Surface Area Analysis: Microporous BET analysis revealed that the surface area of the NMOF was 345.8 m²/g, which decreased to 116.1 m²/g after laccase immobilization. The pore diameter of the NMOF also decreased from 0.545 nm to 0.277 nm after enzyme loading.
+    XRD Analysis: XRD patterns confirmed that the framework structure and phase purity of the NMOF and NMOF-laccase composite were retained after enzyme immobilization.
+    TGA Analysis: Thermogravimetric analysis showed that the thermal behavior of the NMOF was not affected by laccase immobilization. The TG curve of the NMOF-laccase composite showed a three-stage weight loss, attributed to water desorption, laccase decomposition, and NMOF precursor decomposition.
+
+    Comparison with Previous Studies
+
+    The authors compared their results with previous studies on enzyme immobilization into metal-organic frameworks (MOFs). They cited examples of glucose oxidase, lipase, hydrolase, urate oxidase, catalase,

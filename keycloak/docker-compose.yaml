@@ -1,0 +1,66 @@
+services:
+  postgres:
+    image: docker.io/library/postgres:16
+    restart: always
+    env_file: .env
+    environment:
+      PGDATA: /data/postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+    - ./data/postgres:/data/postgres
+    networks:
+    - default
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:23.0
+    restart: always
+    command: start-dev --import-realm
+    user: root
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_DATABASE: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      VIRTUAL_HOST: iai-ml4home028.iai.kit.edu
+      VIRTUAL_PORT: 8080
+      VIRTUAL_PATH: /auth/
+      HTTPS_METHOD: redirect
+      PROXY_ADDRESS_FORWARDING: "true"
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_RELATIVE_PATH: /auth
+      KC_HEALTH_ENABLED: "true"
+      KC_HOSTNAME: iai-ml4home028.iai.kit.edu
+    expose:
+    - 8080
+    volumes:
+    - ./import/:/opt/keycloak/data/import/
+    - ./data/keycloak/:/opt/keycloak/data/h2/
+    healthcheck:
+      test: ["CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080;echo -e \"GET /auth/health/ready HTTP/1.1\r\
+          \nhost: http://localhost\r\nConnection: close\r\n\r\n\" >&3;grep \"HTTP/1.1 200 OK\"\
+          \ <&3"]
+      interval: 5s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+    - default
+    - webserver
+
+networks:
+  default:
+    driver: bridge
+    ipam:
+      config:
+      - subnet: 192.168.78.0/24
+  webserver:
+    external: true

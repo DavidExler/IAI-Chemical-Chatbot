@@ -1,0 +1,11 @@
+name: "KIT Pages Agent"
+messages:
+- content: "Where can I find the kit vpn split config file? Can you give me a link to there website\
+    \ where I can download the openvpn config file?"
+  chain: "agent"
+  tool_names: ["kit_pages"]
+  expected_answer: "http://www.scc.kit.edu/dienste/openvpn"
+- content: "Where can I print DIN A0 posters at the KIT?"
+  chain: "agent"
+  tool_names: ["kit_pages"]
+  expected_answer: "SCC has a Print&Plot service for students and employees of KIT."

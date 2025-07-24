@@ -1,0 +1,214 @@
+name: "Documents MOF Paper 2"
+document_filenames: ["MOF_Parameter_Dataset/2/2.pdf"]
+messages:
+- content: "List for every MOF-Material in the text the name of the Material, MOF, Linker, metal\
+    \ salt, enzyme/enzymes. Every variation of one of the components results in a new material."
+  document_filenames: ["MOF_Parameter_Dataset/2/2.pdf"]
+  expected_answer: |
+    Material 1
+    Composite Name: ZIF-8/Urease
+    MOF Name: ZIF-8
+    Linker Salt: 2-methylimidazole
+    Metal Salt: zinc nitrate
+    Enzyme Name: urease
+
+    Material 2
+    Name Komposit: ZIF-8/Urease
+    MOF-Name: ZIF-8
+    Linkersalz: 2-methylimidazole
+    Metallsalz: zinc nitrate
+    Enzymname: urease
+
+    Material 2
+    Composite Name: ZIF-8/Urease
+    MOF Name: ZIF-8
+    Linker Salt: 2-methylimidazole
+    Metal Salt: zinc nitrate
+    Enzyme Name: urease
+
+    Material 4
+    Composite Name: ZIF-8/Urease
+    MOF Name: ZIF-8
+    Linker Salt: 2-methylimidazole
+    Metal Salt: zinc nitrate
+    Enzyme Name: urease
+- content: "List for every MOF-Material in the text the name of the Material and the concentration\
+    \ of the MOF, Linker, metal salt and enzyme/enzymes. Every variation of one of the components\
+    \ results in a new material."
+  document_filenames: ["MOF_Parameter_Dataset/2/2.pdf"]
+  expected_answer: |
+    Material 1
+    Composite name: ZIF-8/Urease
+    Konzentration Metallsalze: 40 mM
+    Concentration of linker: 160 mM
+    Concentration of enzyme: 10 mg/mL
+
+    Material 2
+    Composite name: ZIF-8/Urease
+    Concentration of metal salts: 40 mM
+    Concentration of linker: 160 mM
+    Concentration of enzyme: 30 mg/mL
+
+    Material 3
+    Composite name: ZIF-8/Urease
+    Concentration of metal salts: 40 mM
+    Concentration of linker: 160 mM
+    Concentration of enzyme: 50 mg/mL
+
+    Material 4
+    Composite name: ZIF-8/Urease
+    Concentration of metal salts: 40 mM
+    Concentration of linker: 160 mM
+    Concentration of enzyme: 70 mg/mL
+- content: "List for every MOF-Material in the text the name of the Material and the pH of the\
+    \ Linker, metal salt and enzyme/enzymes. Every variation of one of the components results\
+    \ in a new material."
+  document_filenames: ["MOF_Parameter_Dataset/2/2.pdf"]
+  expected_answer: |
+    Material 1
+    Name Komposit: ZIF-8/Urease
+    The pH values are not provided in the Text.
+
+    Material 2
+    Name Komposit: ZIF-8/Urease
+    The pH values are not provided in the Text.
+
+    Material 3
+    Name Komposit: ZIF-8/Urease
+    The pH values are not provided in the Text.
+
+    Material 4
+    Name Komposit: ZIF-8/Urease
+    The pH values are not provided in the Text.
+- content: "List for every MOF-Material in the text the name of the Material and the Linker, educt\
+    \ of enzyme catalysis and products of enzyme catalysis and the Metalion and its charge. Every\
+    \ variation of one of the components results in a new material."
+  document_filenames: ["MOF_Parameter_Dataset/2/2.pdf"]
+  expected_answer: |
+    Material 1
+    Composite name: ZIF-8/Urease
+    Linker name: 2-methylimidazole
+    Reactants: urea
+    Products: NH3, CO2
+    Metal ion and charge: Zn^2+
+
+    Material 2
+    Composite name: ZIF-8/Urease
+    Linker name: 2-methylimidazole
+    Reactants: urea
+    Products: NH3, CO2
+    Metal ion and charge: Zn^2+
+
+    Material 3
+    Composite name: ZIF-8/Urease
+    Linker name: 2-methylimidazole
+    Reactants: urea
+    Products: NH3, CO2
+    Metal ion and charge: Zn^2+
+
+    Material 4
+    Composite name: ZIF-8/Urease
+    Linker name: 2-methylimidazole
+    Reactants: urea
+    Products: NH3, CO2
+    Metal ion and charge: Zn^2+
+- content: "is there at least one MOF-Material constructed in the text and do that/those contain\
+    \ enzymes or proteins? if thats true list for every Material the used Linker, its concentration/amount/mass/ratio,\
+    \ the metal salt its concentration/amount/mass/ratio, the involved enzyme/enzymes its/their\
+    \ concentration/amount/mass/ratio, additional components their concentration/amount/mass/ratio.\
+    \ Every variation of one of the components results in anew material. What enzyme reaction\
+    \ is used to evaluate the functionality of the constructed material?"
+  document_filenames: ["MOF_Parameter_Dataset/2/2.pdf"]
+  expected_answer: |
+    Yes, there is at least one MOF material constructed in the text, and it contains an enzyme.
+
+    The MOF material is ZIF-8, and it contains the enzyme urease.
+
+    Here is the information for ZIF-8:
+
+    Linker: 2-methylimidazole
+    Concentration: 160 mM
+    Metal salt: Zinc nitrate
+    Concentration: 40 mM
+    Enzyme: Urease
+    Concentrations: 10, 30, 50, 70, and 90 mg/mL (each concentration corresponds to a different material)
+    Additional components: None mentioned
+
+    Since each concentration of urease corresponds to a different material, we can consider five variations of ZIF-8:
+
+    ZIF-8 with urease (10 mg/mL)
+    ZIF-8 with urease (30 mg/mL)
+    ZIF-8 with urease (50 mg/mL)
+    ZIF-8 with urease (70 mg/mL)
+    ZIF-8 with urease (90 mg/mL)
+
+    The enzyme reaction used to evaluate the functionality of the constructed material is the urea detection reaction, which involves the breakdown of urea by urease.
+- content: "Before answering consider the following questions: is there at least one MOF-Material\
+    \ constructed in the text and do that/those contain enzymes or proteins? if thats true list\
+    \ for every Material: Whats the name oft the Material/Materials? whats the name of the MOF?\
+    \ is there at least one MOF-Material constructed in the text and do that/those contain enzymes\
+    \ or proteins? What linker is used and what is its concentration/amount/mass/ratio? What metal\
+    \ salt is used and what is its concentration/amount/mass/ratio? Whats the charge of the Metal\
+    \ ion? What enzyme/enzymes or protein/proteins is/are used its/their concentration/amount/mass/ratio?\
+    \ Are their additional components and if so what their concentration/amount/mass/ratio? Every\
+    \ variation of one of the components results in a new material. What enzyme reaction is used\
+    \ to evaluate the functionality of the constructed material? What are the edukts and the corrosponding\
+    \ products of the enzymatic reaction? list the answers of all questions for every material\
+    \ individually"
+  document_filenames: ["MOF_Parameter_Dataset/2/2.pdf"]
+  expected_answer: |
+    Material 1
+    Name Komposit: ZIF-8/Urease
+    MOF-Name: ZIF-8
+    Linkersalz: 2-methylimidazole
+    Metallsalz: zinc nitrate
+    Enzymname: urease
+    Organismus: -
+    Konzentration Metallsalze: 40 mM
+    Konzentration Linker: 160 mM
+    Konzentration Enzyme: 10 mg/mL
+    Edukte: urea
+    Produkt: NH3, CO2
+    Metallion (mit Ladung): Zn^2+
+
+    Material 2
+    Name Komposit: ZIF-8/Urease
+    MOF-Name: ZIF-8
+    Linkersalz: 2-methylimidazole
+    Metallsalz: zinc nitrate
+    Enzymname: urease
+    Organismus: -
+    Konzentration Metallsalze: 40 mM
+    Konzentration Linker: 160 mM
+    Konzentration Enzyme: 30 mg/mL
+    Edukte: urea
+    Produkt: NH3, CO2
+    Metallion (mit Ladung): Zn^2+
+
+    Material 3
+    Name Komposit: ZIF-8/Urease
+    MOF-Name: ZIF-8
+    Linkersalz: 2-methylimidazole
+    Metallsalz: zinc nitrate
+    Enzymname: urease
+    Organismus: -
+    Konzentration Metallsalze: 40 mM
+    Konzentration Linker: 160 mM
+    Konzentration Enzyme: 50 mg/mL
+    Edukte: urea
+    Produkt: NH3, CO2
+    Metallion (mit Ladung): Zn^2+
+
+    Material 4
+    Name Komposit: ZIF-8/Urease
+    MOF-Name: ZIF-8
+    Linkersalz: 2-methylimidazole
+    Metallsalz: zinc nitrate
+    Enzymname: urease
+    Organismus: -
+    Konzentration Metallsalze: 40 mM
+    Konzentration Linker: 160 mM
+    Konzentration Enzyme: 70 mg/mL
+    Edukte: urea
+    Produkt: NH3, CO2
+    Metallion (mit Ladung): Zn^2+

@@ -1,0 +1,145 @@
+<div #messages_element id="messages">
+    @for (message of messages; track message.id) {
+        <mat-card
+            [class.right]="message.type === 'human'"
+            [class.left]="message.type === 'ai'"
+            #message
+        >
+            @if (message.type === "ai" || message.type === "AIMessageChunk") {
+                <mat-card-content>
+                    <markdown
+                        [data]="message.content"
+                        lineNumbers
+                        lineHighlight
+                        mermaid
+                        katex
+                        clipboard
+                        markdown
+                        [disableSanitizer]="true"
+                    ></markdown>
+                    @if (
+                        message.additional_kwargs.intermediate_steps;
+                        as steps
+                    ) {
+                        <ng-container
+                            *ngTemplateOutlet="
+                                stepTemplate;
+                                context: { $implicit: steps }
+                            "
+                        ></ng-container>
+                    }
+                </mat-card-content>
+                <mat-card-actions>
+                    <button
+                        mat-icon-button
+                        (click)="copyToClipboard(message.content, icon)"
+                    >
+                        <mat-icon #icon fontIcon="content_copy"></mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        (click)="openFeedbackDialog(message.id, 'up')"
+                    >
+                        <mat-icon>thumb_up</mat-icon>
+                    </button>
+                    <button
+                        mat-icon-button
+                        (click)="openFeedbackDialog(message.id, 'down')"
+                    >
+                        <mat-icon>thumb_down</mat-icon>
+                    </button>
+                </mat-card-actions>
+            } @else {
+                <mat-card-content>
+                    <p [innerText]="message.content"></p>
+                </mat-card-content>
+            }
+        </mat-card>
+    }
+    @if (newPrompt()) {
+        <mat-card class="right">
+            <mat-card-content>
+                <p [innerText]="newPrompt()"></p>
+            </mat-card-content>
+        </mat-card>
+    }
+    @if (newResponse(); as newResponse) {
+        <mat-card class="left">
+            <mat-card-content>
+                <markdown
+                    [data]="newResponse.content"
+                    lineNumbers
+                    lineHighlight
+                    mermaid
+                    katex
+                    clipboard
+                    markdown
+                    [disableSanitizer]="true"
+                ></markdown>
+                @if (newResponse.steps; as steps) {
+                    <ng-container
+                        *ngTemplateOutlet="
+                            stepTemplate;
+                            context: { $implicit: steps }
+                        "
+                    ></ng-container>
+                }
+            </mat-card-content>
+        </mat-card>
+    }
+</div>
+
+<ng-template let-steps #stepTemplate>
+    @if (steps.length > 0) {
+        <mat-checkbox color="primary" #showIntermediateSteps>
+            Show intermediate steps
+        </mat-checkbox>
+        @if (showIntermediateSteps.checked) {
+            <mat-vertical-stepper class="steps">
+                @for (
+                    step of steps;
+                    track step.action.log;
+                    let first = $first;
+                    let last = $last
+                ) {
+                    <mat-step>
+                        <ng-template matStepLabel>
+                            Tool: {{ step.action.tool }}
+                        </ng-template>
+                        <div class="step-description">
+                            <h3>Tool Input:</h3>
+                            <code
+                                [innerText]="step.action.tool_input | json"
+                            ></code>
+                            <h3>Tool Log:</h3>
+                            <code [innerText]="step.action.log"></code>
+                            <h3>Tool Output:</h3>
+                            <code [innerText]="step.observation"></code>
+                        </div>
+
+                        <div>
+                            @if (!first) {
+                                <button
+                                    mat-button
+                                    matStepperPrevious
+                                    color="primary"
+                                >
+                                    Back
+                                </button>
+                            }
+                            @if (!last) {
+                                <button
+                                    mat-button
+                                    matStepperNext
+                                    color="primary"
+                                >
+                                    Next
+                                </button>
+                            }
+                        </div>
+                    </mat-step>
+                }
+            </mat-vertical-stepper>
+        }
+    }
+</ng-template>

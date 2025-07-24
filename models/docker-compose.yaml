@@ -1,0 +1,121 @@
+services:
+  llm-model:
+    image: openmmlab/lmdeploy
+    ipc: host
+    shm_size: 64g
+    env_file: .env
+    command: lmdeploy serve api_server --log-level INFO --download-dir /root/.cache/huggingface
+      --tp 4 --server-port 80 meta-llama/Meta-Llama-3.1-70B-Instruct --model-name meta-llama/Meta-Llama-3.1-70B-Instruct
+      --session-len 65536
+    #command: lmdeploy serve api_server --log-level INFO --download-dir /root/.cache/huggingface
+    #  --tp 4 --server-port 80 meta-llama/Llama-3.3-70B-Instruct --model-name meta-llama/Llama-3.3-70B-Instruct
+    #  --session-len 65536
+    networks:
+    - inference
+    volumes:
+    - /data/huggingface/:/root/.cache/huggingface/
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "-S", "http://localhost:80/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5m
+    depends_on:
+      embeddings-model: # Necessary to start in the correct order, so the gpus won't get overallocated
+        condition: service_healthy
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 4
+            capabilities: [gpu]
+
+  embeddings-model:
+    image: ghcr.io/huggingface/text-embeddings-inference
+    restart: always
+    shm_size: 10g
+    env_file: .env
+    environment:
+      TRUST_REMOTE_CODE: "true"
+      MODEL_ID: intfloat/multilingual-e5-large
+      HUGGINGFACE_HUB_CACHE: /data
+      HOSTNAME: 0.0.0.0
+      PORT: 80
+      MAX_BATCH_TOKENS: 8192
+    volumes:
+    - /data/huggingface/hub/:/data
+    networks:
+    - inference
+    - monitoring
+    healthcheck:
+      test: timeout 3s bash -c ':> /dev/tcp/0.0.0.0/80' || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 2m
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            device_ids: ["1"]
+            capabilities: [gpu]
+
+  evaluation-llm-model:
+    image: ghcr.io/huggingface/text-generation-inference
+    restart: always
+    shm_size: 10g
+    profiles: ["evaluate"]
+    env_file: .env
+    environment:
+      TRUST_REMOTE_CODE: "true"
+      MODEL_ID: prometheus-eval/prometheus-8x7b-v2.0
+      QUANTIZE: eetq
+      HUGGINGFACE_HUB_CACHE: /data
+      HOSTNAME: 0.0.0.0
+    volumes:
+    - /data/huggingface/hub/:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 5m
+    networks:
+    - inference
+    - monitoring
+    depends_on:
+      llm-model:
+        condition: service_healthy
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - driver: nvidia
+            count: 4
+            capabilities: [gpu]
+
+  unstructured:
+    image: downloads.unstructured.io/unstructured-io/unstructured-api
+    restart: always
+    environment:
+      SCARF_NO_ANALYTICS: "true"
+    healthcheck:
+      test: wget --no-verbose --tries=1 -S http://localhost:8000/healthcheck || exit 1
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    networks:
+    - inference
+
+networks:
+  inference:
+    driver: bridge
+    name: inference
+    ipam:
+      config:
+      - subnet: 192.168.81.0/24
+  monitoring:
+    external: true

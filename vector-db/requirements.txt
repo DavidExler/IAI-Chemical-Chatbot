@@ -1,0 +1,28 @@
+langchain 
+langchain-community 
+langchain-huggingface
+langchain-experimental
+langchain-text-splitters
+langchain-openai
+langchain-milvus <0.2.0
+langchain-unstructured
+unstructured[pdf,docx]
+sentence-transformers
+lxml
+atlassian-python-api
+pymilvus ==2.4.3
+Pillow
+pytesseract
+pdf2image
+docx2txt
+markdownify
+beautifulsoup4
+xlrd
+pandas
+reportlab
+rlPyCairo
+more-itertools
+svglib
+requests
+tqdm
+html2text

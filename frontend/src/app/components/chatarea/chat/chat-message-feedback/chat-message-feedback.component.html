@@ -1,0 +1,39 @@
+<h2 mat-dialog-title>Feedback</h2>
+<mat-dialog-content>
+    @if (feedback().type === "down") {
+        <mat-form-field style="width: 100%">
+            <mat-label>Correct Answer</mat-label>
+            <textarea
+                matInput
+                [(ngModel)]="feedback().expected_answer"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="3"
+                cdkAutosizeMaxRows="8"
+            ></textarea>
+        </mat-form-field>
+        <br />
+        <br />
+    }
+    <mat-form-field style="width: 100%">
+        <mat-label>Additional Comments</mat-label>
+        <textarea
+            matInput
+            [(ngModel)]="feedback().feedback"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="3"
+            cdkAutosizeMaxRows="8"
+        ></textarea>
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button
+        mat-raised-button
+        color="primary"
+        [mat-dialog-close]="feedback()"
+        cdkFocusInitial
+    >
+        Send
+    </button>
+</mat-dialog-actions>

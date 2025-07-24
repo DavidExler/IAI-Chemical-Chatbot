@@ -1,0 +1,8 @@
+<app-sidebar [(conversation)]="conversation"></app-sidebar>
+
+<section id="main">
+    <app-chatarea
+        (reloadConversationChange)="reloadConversation()"
+        [(conversation)]="conversation"
+    ></app-chatarea>
+</section>

@@ -1,0 +1,8 @@
+name: "Documents CycleGAN"
+messages:
+- content: "What are the 4 Neuronal Networks used in CycleGANs?"
+  document_filenames: ["cyclegan.pdf"]
+  expected_answer: "Two generators and two discriminators"
+- content: "Who are the main authors of the CycleGAN paper?"
+  document_filenames: ["cyclegan.pdf"]
+  expected_answer: "Jun-Yan Zhu, Taesung Park, Phillip Isola Alexei A. Efros"
