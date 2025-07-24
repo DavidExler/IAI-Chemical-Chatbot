@@ -1,5 +1,7 @@
 # IAI Chatbot
 
+This work is the Backbone for the quantitative comparison of the impact chatbot architectures have on the domain-specific knowledge of a LLM. The architectures can be found at: https://github.com/DavidExler/Chemical-Chatbot-Architectures
+
 ## Get Started
 
 ### Overview
@@ -86,3 +88,18 @@ Read more about makefiles [here](https://www.gnu.org/software/make/manual/make.h
 All services are configured via `.env` files. You can find an example `.env` file in each service folder.
 
 To start a service, you need to copy the `.env.example` to `.env` and adjust the configuration.
+
+
+## Citation
+
+This work is part of the following paper:
+
+> **A comparison of different approaches to increase a Large Language Model’s chemical capabilities**  
+> *Authors: D Exler, M Raimann, M Münker, M Rosin, J E Urrutia
+Gómez, M Reischl1, C. Niemeyer and L Rettenberger*  
+> *...*
+
+
+## License
+
+...
